@@ -52,6 +52,32 @@ Route::prefix('profile')->group(function () {
 
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::get('migrate', function() {
+        $exitCode = Artisan::call('migrate');
+
+        if ($exitCode === 0) {
+            $output = Artisan::output();
+            return response()->json(['status' => 'success', 'message' => $output]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Migration failed'], 500);
+        }
+    })->name('migrate');
+    Route::get('migrate-rollback', function() {
+        $exitCodeRollBack = Artisan::call('migrate:rollback');
+
+        if ($exitCodeRollBack === 0) {
+            $output = Artisan::output();
+            return response()->json(['status' => 'success', 'message' => $output]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Migration failed'], 500);
+        }
+    })->name('migrate-rollback');
+    Route::get('clear',function() {
+        Artisan::call('optimize:clear');
+        flash()->success('Cache Clear', 'Cache clear successfully');
+        return redirect()->back();
+//    dd('cleared');
+    });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::middleware(['roles'])->group(function () {
             Route::group(['prefix' => 'role', 'as' => 'role.'], function(){

@@ -217,7 +217,6 @@
                     $routesData = \App\Models\RoleRoute::where('route_name', $routeName)->get();
                     $roles = $routesData->pluck('role_name')->toArray();
                     $userRoles = $user->roles->pluck('name')->toArray();
-
                 @endphp
                 <li class="side-nav-item">
                     <a href="{{route('dashboard')}}" class="side-nav-link">
@@ -225,7 +224,7 @@
                         <span> Dashboards </span>
                     </a>
                 </li>
-
+                @if($user->id == 1)
                 <li class="side-nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarEcommerce" aria-expanded="false"
                        aria-controls="sidebarEcommerce" class="side-nav-link">
@@ -305,6 +304,7 @@
                         </ul>
                     </div>
                 </li>
+                @endif
             </ul>
             <!--- End Sidemenu -->
             <div class="clearfix"></div>

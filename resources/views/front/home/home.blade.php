@@ -3,55 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Marketing Website</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Your custom CSS -->
-    <link href="styles.css" rel="stylesheet">
+    <title>Hisab Khata</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
 </head>
 <body>
+<header>
+    <h1>Welcome to Hisab Khata</h1>
+    <p>Your Personal Finance Manager</p>
+</header>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href=""
-    ><img src="{{asset('/')}}front/logo.jpg" alt="" style="height: 1%;width: 12%;">
-    </a>
-    <!-- You can add more navigation elements or buttons here -->
+<nav>
+    <a href="{{route('home')}}">Home</a>
+    <a href="{{route('login')}}">Login</a>
+    <a href="javascript:void (0)">About</a>
+    <a href="javascript:void (0)">Contact</a>
 </nav>
 
-<!-- Hero Section -->
-<section class="jumbotron text-center">
-    <div class="container">
-        <h1>Welcome to Our Email Marketing Service</h1>
-        <p class="lead">Create engaging email campaigns easily!</p>
-        <a href="#signup" class="btn btn-primary btn-lg">Sign Up Now</a>
+<div class="container">
+    <div class="card">
+        <h2>Track Your Expenses</h2>
+        <p>Hisab Khata helps you keep track of your daily expenses with ease. Simply input your expenses and let us do the rest.</p>
     </div>
-</section>
 
-<!-- Sign Up Section -->
-<section id="signup" class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h2>Email Entry for promotion</h2>
-            <!-- Your sign-up form can go here -->
-            <form>
-                <!-- Form fields -->
-                <div class="form-group">
-                    <label for="emailInput">Email address</label>
-                    <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" autocomplete="off">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
-            </form>
-        </div>
+    <div class="card">
+        <h2>Manage Your Budget</h2>
+        <p>Set a budget and monitor your spending to ensure you stay within your limits. Hisab Khata provides insights to help you manage your finances better.</p>
     </div>
-</section>
 
-<!-- Footer -->
-<footer class="text-center py-4">
-    <p>&copy; 2023 Apcom Group</p>
+    <div class="card">
+        <h2>Generate Reports</h2>
+        <p>Generate detailed reports to understand your spending habits and make informed decisions about your finances.</p>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Hisab Khata. All rights reserved.</p>
 </footer>
-
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

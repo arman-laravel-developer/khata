@@ -305,7 +305,26 @@
                     </div>
                 </li>
                 @endif
+                <li class="side-nav-item">
+                    <a href="{{route('payment-give')}}" class="side-nav-link">
+                        <i class="uil-dollar-sign"></i>
+                        <span> Payment Give </span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{route('payment-received')}}" class="side-nav-link">
+                        <i class="uil-receipt"></i>
+                        <span> Payment Received </span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{route('expense')}}" class="side-nav-link">
+                        <i class="uil-exchange"></i>
+                        <span> Expense </span>
+                    </a>
+                </li>
             </ul>
+
             <!--- End Sidemenu -->
             <div class="clearfix"></div>
         </div>

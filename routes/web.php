@@ -8,6 +8,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\PaymentGiveController;
+use App\Http\Controllers\PaymentReceivedController;
+use App\Http\Controllers\ExpenseController;
 
 use App\Models\RoleRoute;
 
@@ -79,6 +82,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 //    dd('cleared');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/payment-give', [PaymentGiveController::class, 'index'])->name('payment-give');
+
+    Route::get('/payment-received', [PaymentReceivedController::class, 'index'])->name('payment-received');
+
+    Route::get('/expense', [ExpenseController::class, 'index'])->name('expense');
+
+
         Route::middleware(['roles'])->group(function () {
             Route::group(['prefix' => 'role', 'as' => 'role.'], function(){
                 Route::get('/add', [RoleController::class, 'index'])->name('add');

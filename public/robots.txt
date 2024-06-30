@@ -1,0 +1,3 @@
+Sitemap: https://www.banglann.com.bd/sitemap.xml
+Sitemap: https://www.banglann.com.bd/news_sitemap.xml
+Sitemap: https://www.banglann.com.bd/static-pages.xml

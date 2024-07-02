@@ -8,10 +8,10 @@
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right" style="display: block!important;">
-                    <a href="javascript: void(0);" class="btn btn-primary ms-1">
+                    <button href="javascript: void(0);" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <i class="mdi mdi-plus"></i>
                         Add Payment Give
-                    </a>
+                    </button>
                 </div>
                 <h4 class="page-title">Payment Give Manage</h4>
             </div>
@@ -83,6 +83,34 @@
             </div> <!-- end card -->
         </div><!-- end col-->
     </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Expanse Add</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div> <!-- end modal header -->
+                <div class="modal-body">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Purpose:</label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Amount:</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div> <!-- end modal footer -->
+            </div> <!-- end modal content-->
+        </div> <!-- end modal dialog-->
+    </div> <!-- end modal-->
 
 @endsection
 

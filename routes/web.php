@@ -84,10 +84,22 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/payment-give', [PaymentGiveController::class, 'index'])->name('payment-give');
+    Route::post('/payment-give-create', [PaymentGiveController::class, 'create'])->name('payment-give.new');
+    Route::get('/payment-give-edit/{id}', [PaymentGiveController::class, 'edit'])->name('payment-give.edit');
+    Route::post('/payment-give-update', [PaymentGiveController::class, 'update'])->name('payment-give.update');
+    Route::post('/payment-give-delete/{id}', [PaymentGiveController::class, 'delete'])->name('payment-give.delete');
 
     Route::get('/payment-received', [PaymentReceivedController::class, 'index'])->name('payment-received');
+    Route::post('/payment-received-create', [PaymentReceivedController::class, 'create'])->name('payment-received.new');
+    Route::get('/payment-received-edit/{id}', [PaymentReceivedController::class, 'edit'])->name('payment-received.edit');
+    Route::post('/payment-received-update', [PaymentReceivedController::class, 'update'])->name('payment-received.update');
+    Route::post('/payment-received-delete/{id}', [PaymentReceivedController::class, 'delete'])->name('payment-received.delete');
 
     Route::get('/expense', [ExpenseController::class, 'index'])->name('expense');
+    Route::post('/expense-create', [ExpenseController::class, 'create'])->name('expense.new');
+    Route::get('/expense-edit/{id}', [ExpenseController::class, 'edit'])->name('expense.edit');
+    Route::post('/expense-update', [ExpenseController::class, 'update'])->name('expense.update');
+    Route::post('/expense-delete/{id}', [ExpenseController::class, 'delete'])->name('expense.delete');
 
 
         Route::middleware(['roles'])->group(function () {

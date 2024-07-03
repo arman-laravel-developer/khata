@@ -308,13 +308,13 @@
                 <li class="side-nav-item">
                     <a href="{{route('payment-give')}}" class="side-nav-link">
                         <i class="uil-dollar-sign"></i>
-                        <span> Payment Give </span>
+                        <span> Dollar Buy </span>
                     </a>
                 </li>
                 <li class="side-nav-item">
                     <a href="{{route('payment-received')}}" class="side-nav-link">
                         <i class="uil-receipt"></i>
-                        <span> Payment Received </span>
+                        <span> Dollar Sell </span>
                     </a>
                 </li>
                 <li class="side-nav-item">

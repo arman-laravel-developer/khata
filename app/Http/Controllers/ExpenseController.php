@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class ExpenseController extends Controller
 {
     public function index()
     {
         $expenses = Expense::latest()->get();
-        return view('admin.pages.expense', compact('expenses'));
+        $total_cost = DB::table('expenses')->sum('expenses.amount');
+        return view('admin.pages.expense', compact('expenses', 'total_cost'));
     }
 
     public function create(Request $request)

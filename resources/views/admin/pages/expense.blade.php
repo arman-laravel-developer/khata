@@ -22,6 +22,11 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="float-end">Total Cost : &#2547;{{number_format($total_cost)}}</p>
+                        </div>
+                    </div>
                     <table id="alternative-page-datatable" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                         <tr>

@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('title')
-    Payment Received manage | {{env('APP_NAME')}}
+    Dollar Sell manage | {{env('APP_NAME')}}
 @endsection
 
 @section('body')
@@ -10,10 +10,10 @@
                 <div class="page-title-right" style="display: block!important;">
                     <button href="javascript: void(0);" class="btn btn-primary ms-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <i class="mdi mdi-plus"></i>
-                        Add Payment Received
+                        Add Dollar Sell
                     </button>
                 </div>
-                <h4 class="page-title">Payment Received Manage</h4>
+                <h4 class="page-title">Dollar Sell Manage</h4>
             </div>
         </div>
     </div>
@@ -89,7 +89,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Expanse Add</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Dollar Sell Add</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div> <!-- end modal header -->
                 <div class="modal-body">

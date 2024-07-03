@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('payment_gives', function (Blueprint $table) {
             $table->id();
             $table->integer('member_id')->nullable();
+            $table->double('dollar')->nullable();
+            $table->double('rate')->nullable();
             $table->double('amount')->nullable();
             $table->tinyInteger('payment_status')->nullable();
             $table->foreignId('add_by')->nullable();

@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payment_receiveds', function (Blueprint $table) {
+        Schema::create('details', function (Blueprint $table) {
             $table->id();
-            $table->integer('member_id')->nullable();
-            $table->double('dollar')->nullable();
-            $table->double('rate')->nullable();
+            $table->foreignId('payment_received_id')->nullable();
             $table->double('amount')->nullable();
-            $table->tinyInteger('payment_status')->nullable();
-            $table->foreignId('add_by')->nullable();
-            $table->foreignId('update_by')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_receiveds');
+        Schema::dropIfExists('details');
     }
 };

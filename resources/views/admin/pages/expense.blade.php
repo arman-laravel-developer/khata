@@ -96,11 +96,11 @@
                         @csrf
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Purpose:</label>
-                            <textarea class="form-control" name="purpose" id="message-text"></textarea>
+                            <textarea class="form-control" name="purpose" id="message-text" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Amount:</label>
-                            <input type="number" class="form-control" name="amount" id="recipient-name">
+                            <input type="number" class="form-control" name="amount" id="recipient-name" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -126,11 +126,11 @@
                         <input type="hidden" name="expense_id" id="vExpense_id">
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Purpose:</label>
-                            <textarea class="form-control" name="purpose" id="purpose"></textarea>
+                            <textarea class="form-control" name="purpose" id="purpose" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Amount:</label>
-                            <input type="number" class="form-control" name="amount" id="amount">
+                            <input type="number" class="form-control" name="amount" id="amount" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

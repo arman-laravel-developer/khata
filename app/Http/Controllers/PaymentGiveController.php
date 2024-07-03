@@ -24,6 +24,7 @@ class PaymentGiveController extends Controller
         $give->dollar = $request->dollar;
         $give->rate = $request->rate;
         $give->amount = $request->amount;
+        $give->payment_gateway = $request->payment_gateway;
         $give->payment_status = 1;
         $give->add_by = Auth::user()->id;
         $give->save();
@@ -47,6 +48,7 @@ class PaymentGiveController extends Controller
         $give->dollar = $request->dollar;
         $give->rate = $request->rate;
         $give->amount = $request->amount;
+        $give->payment_gateway = $request->payment_gateway;
         $give->update_by = Auth::user()->id;
         $give->save();
         flash()->success('Payment give update', 'Payment give update successful');

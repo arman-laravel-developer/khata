@@ -27,56 +27,61 @@
                         <tr>
                             <th>S.N</th>
                             <th>Member ID</th>
-                            <th>Amount</th>
+                            <th>Dollar QTY</th>
+                            <th>Dollar Rate</th>
                             <th>BDT</th>
+                            <th>Due Amount</th>
                             <th>Add By</th>
+                            <th>Update By</th>
                             <th>Payment Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-{{--                        @foreach($categories as $category)--}}
-{{--                            <tr>--}}
-{{--                                <td>{{$loop->iteration}}</td>--}}
-{{--                                <td>{{$category->category_name}}</td>--}}
-{{--                                <td>--}}
-{{--                                    @if($category->parent_id == 0)--}}
-{{--                                        Main Category--}}
-{{--                                    @else--}}
-{{--                                        {{$category->subCategory->category_name}}--}}
-{{--                                    @endif--}}
-{{--                                </td>--}}
-{{--                                <td>--}}
-{{--                                    @if($category->status == 1)--}}
-{{--                                        <span class="badge bg-success">Active</span>--}}
-{{--                                    @else--}}
-{{--                                        <span class="badge bg-danger">In Active</span>--}}
-{{--                                    @endif--}}
-{{--                                </td>--}}
-{{--                                <td>--}}
-{{--                                    <a href="{{route('category.edit', ['id' => $category->id])}}" class="btn btn-success btn-sm" title="Edit">--}}
-{{--                                        <i class="ri-edit-box-fill"></i>--}}
-{{--                                    </a>--}}
-{{--                                    <button type="button" onclick="confirmDelete({{$category->id}});" class="btn btn-danger btn-sm" title="Delete">--}}
-{{--                                        <i class="ri-chat-delete-fill"></i>--}}
-{{--                                    </button>--}}
+                        @foreach($sells as $sell)
+                            @php
+                                $total_pay = \App\Models\Detail::where('payment_received_id', $sell->id)->sum('amount');
+                            @endphp
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$sell->member_id}}</td>
+                                <td>${{$sell->dollar}}</td>
+                                <td>{{$sell->rate}}</td>
+                                <td>{{number_format($sell->amount + $total_pay)}}TK</td>
+                                <td>{{number_format($sell->amount)}}TK</td>
+                                <td>{{$sell->userAdd->name}}</td>
+                                <td>{{$sell->userUpdate->name ?? 'N/A'}}</td>
+                                <td>
+                                    @if($sell->payment_status == 1)
+                                        <span class="badge bg-success">Complete</span>
+                                    @else
+                                        <span class="badge bg-danger">Due</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <button type="button" value="{{$sell->id}}" class="btn btn-success editBtn btn-sm" title="Edit">
+                                        <i class="ri-edit-box-fill"></i>
+                                    </button>
+                                    <button type="button" onclick="confirmDelete({{$sell->id}});" class="btn btn-danger btn-sm" title="Delete">
+                                        <i class="ri-chat-delete-fill"></i>
+                                    </button>
 
-{{--                                    <form action="{{route('category.delete', ['id' => $category->id])}}" method="POST" id="categoryDeleteForm{{$category->id}}">--}}
-{{--                                        @csrf--}}
-{{--                                    </form>--}}
-{{--                                    <script>--}}
-{{--                                        function confirmDelete(categoryId) {--}}
-{{--                                            var confirmDelete = confirm('Are you sure you want to delete this?');--}}
-{{--                                            if (confirmDelete) {--}}
-{{--                                                document.getElementById('categoryDeleteForm' + categoryId).submit();--}}
-{{--                                            } else {--}}
-{{--                                                return false;--}}
-{{--                                            }--}}
-{{--                                        }--}}
-{{--                                    </script>--}}
-{{--                                </td>--}}
-{{--                            </tr>--}}
-{{--                        @endforeach--}}
+                                    <form action="{{route('payment-received.delete', ['id' => $sell->id])}}" method="POST" id="sellDeleteForm{{$sell->id}}">
+                                        @csrf
+                                    </form>
+                                    <script>
+                                        function confirmDelete(sellId) {
+                                            var confirmDelete = confirm('Are you sure you want to delete this?');
+                                            if (confirmDelete) {
+                                                document.getElementById('sellDeleteForm' + sellId).submit();
+                                            } else {
+                                                return false;
+                                            }
+                                        }
+                                    </script>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div> <!-- end card body-->
@@ -86,31 +91,127 @@
 
     <!-- Add Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog  modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Dollar Sell Add</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div> <!-- end modal header -->
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('payment-received.new')}}" id="submitForm" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Purpose:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                            <label class="col-form-label">Member ID:</label>
+                            <input type="number" class="form-control" name="member_id" required>
                         </div>
                         <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">Amount:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                            <label class="col-form-label">Dollar QTY:</label>
+                            <input type="number" class="form-control" name="dollar" id="dollar_qty" oninput="calculateAmount()" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Dollar Rate:</label>
+                            <input type="number" class="form-control" name="rate" id="dollar_rate" oninput="calculateAmount()" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Amount:</label>
+                            <input type="text" class="form-control" name="amount" id="amount" readonly required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Paying Amount:</label>
+                            <input type="text" class="form-control" name="paying_amount" id="paying_amount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Payment gateway:</label>
+                            <input type="text" class="form-control" name="payment_gateway" required>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
+                    <button type="submit" onclick="validateAndSubmitForm()" class="btn btn-primary">Submit</button>
                 </div> <!-- end modal footer -->
             </div> <!-- end modal content-->
         </div> <!-- end modal dialog-->
     </div> <!-- end modal-->
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editSellModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Dollar Sell Add</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div> <!-- end modal header -->
+                <div class="modal-body">
+                    <form action="{{route('payment-received.new')}}" id="submitForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="col-form-label">Member ID:</label>
+                            <input type="number" class="form-control" name="member_id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Amount:</label>
+                            <input type="text" class="form-control" name="amount" id="amount" readonly required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Paying Amount:</label>
+                            <input type="text" class="form-control" name="paying_amount" id="paying_amount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Payment gateway:</label>
+                            <input type="text" class="form-control" name="payment_gateway" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" onclick="validateAndSubmitForm()" class="btn btn-primary">Submit</button>
+                </div> <!-- end modal footer -->
+            </div> <!-- end modal content-->
+        </div> <!-- end modal dialog-->
+    </div> <!-- end modal-->
+
+    <script>
+        function calculateAmount() {
+            const dollarQty = document.getElementById('dollar_qty').value;
+            const dollarRate = document.getElementById('dollar_rate').value;
+            const amount = dollarQty * dollarRate;
+            document.getElementById('amount').value = amount ? amount : '';
+        }
+
+        function calculateAmountEdit() {
+            const dollarQtyEdit = document.getElementById('dollar_qty_edit').value;
+            const dollarRateEdit = document.getElementById('dollar_rate_edit').value;
+            const amountEdit = dollarQtyEdit * dollarRateEdit;
+            document.getElementById('amount_edit').value = amountEdit ? amountEdit : '';
+        }
+        function validateAndSubmitForm() {
+            const form = document.getElementById('submitForm');
+            if (form.checkValidity()) {
+                form.submit();
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        }
+        function validateAndSubmitEditForm() {
+            const form = document.getElementById('submitFormEdit');
+            if (form.checkValidity()) {
+                form.submit();
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.editBtn', function () {
+                var sell_id = $(this).val();
+                alert(sell_id);
+            })
+        });
+    </script>
+
+
 
 @endsection
 

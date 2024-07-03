@@ -36,6 +36,7 @@
                             <th>Dollar QTY</th>
                             <th>Dollar Rate</th>
                             <th>BDT</th>
+                            <th>Payment Gateway</th>
                             <th>Add By</th>
                             <th>Update By</th>
                             <th>Payment Status</th>
@@ -50,6 +51,7 @@
                                 <td>${{$give->dollar}}</td>
                                 <td>{{$give->rate}} TK/$</td>
                                 <td>{{number_format($give->amount)}} TK</td>
+                                <td>{{$give->payment_gateway}}</td>
                                 <td>{{$give->userAdd->name}}</td>
                                 <td>{{$give->userUpdate->name ?? 'N/A'}}</td>
                                 <td>
@@ -92,14 +94,14 @@
 
     <!-- Add Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Dollar Buy Add</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div> <!-- end modal header -->
                 <div class="modal-body">
-                    <form action="{{route('payment-give.new')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('payment-give.new')}}" id="submitForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label class="col-form-label">Member ID:</label>
@@ -117,26 +119,30 @@
                             <label class="col-form-label">Amount:</label>
                             <input type="text" class="form-control" name="amount" id="amount" readonly required>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div> <!-- end modal footer -->
+                        <div class="mb-3">
+                            <label class="col-form-label">Payment gateway:</label>
+                            <input type="text" class="form-control" name="payment_gateway" required>
+                        </div>
                     </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" onclick="validateAndSubmitForm()" class="btn btn-primary">Submit</button>
+                </div> <!-- end modal footer -->
             </div> <!-- end modal content-->
         </div> <!-- end modal dialog-->
     </div> <!-- end modal-->
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editGiveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Payment Give Update</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div> <!-- end modal header -->
                 <div class="modal-body">
-                    <form action="{{route('payment-give.update')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('payment-give.update')}}" id="submitFormEdit" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="give_id" id="give_id">
                         <div class="mb-3">
@@ -155,12 +161,16 @@
                             <label class="col-form-label">Amount:</label>
                             <input type="text" class="form-control" name="amount" id="amount_edit" readonly required>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div> <!-- end modal footer -->
+                        <div class="mb-3">
+                            <label class="col-form-label">Payment gateway:</label>
+                            <input type="text" class="form-control" name="payment_gateway" id="payment_gateway_edit"  required>
+                        </div>
                     </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" onclick="validateAndSubmitEditForm()" class="btn btn-primary">Submit</button>
+                </div> <!-- end modal footer -->
             </div> <!-- end modal content-->
         </div> <!-- end modal dialog-->
     </div> <!-- end modal-->
@@ -178,6 +188,22 @@
             const dollarRateEdit = document.getElementById('dollar_rate_edit').value;
             const amountEdit = dollarQtyEdit * dollarRateEdit;
             document.getElementById('amount_edit').value = amountEdit ? amountEdit : '';
+        }
+        function validateAndSubmitForm() {
+            const form = document.getElementById('submitForm');
+            if (form.checkValidity()) {
+                form.submit();
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        }
+        function validateAndSubmitEditForm() {
+            const form = document.getElementById('submitFormEdit');
+            if (form.checkValidity()) {
+                form.submit();
+            } else {
+                alert('Please fill out all required fields.');
+            }
         }
     </script>
 
@@ -200,6 +226,7 @@
                         $('#dollar_qty_edit').val(response.give.dollar);
                         $('#dollar_rate_edit').val(response.give.rate);
                         $('#amount_edit').val(response.give.amount);
+                        $('#payment_gateway_edit').val(response.give.payment_gateway);
 
                         $('#give_id').val(give_id);
                     }

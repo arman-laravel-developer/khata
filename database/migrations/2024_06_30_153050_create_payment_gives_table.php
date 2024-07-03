@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('payment_gives', function (Blueprint $table) {
             $table->id();
             $table->integer('member_id')->nullable();
+            $table->string('payment_gateway')->nullable();
             $table->double('dollar')->nullable();
             $table->double('rate')->nullable();
             $table->double('amount')->nullable();

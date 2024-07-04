@@ -92,6 +92,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/payment-received', [PaymentReceivedController::class, 'index'])->name('payment-received');
     Route::post('/payment-received-create', [PaymentReceivedController::class, 'create'])->name('payment-received.new');
     Route::get('/payment-received-edit/{id}', [PaymentReceivedController::class, 'edit'])->name('payment-received.edit');
+    Route::get('/payment-received-view/{id}', [PaymentReceivedController::class, 'view'])->name('payment-received.view');
     Route::post('/payment-received-update', [PaymentReceivedController::class, 'update'])->name('payment-received.update');
     Route::post('/payment-received-delete/{id}', [PaymentReceivedController::class, 'delete'])->name('payment-received.delete');
 

@@ -65,9 +65,11 @@
                                     <button type="button" value="{{$give->id}}" class="btn btn-success editBtn btn-sm" title="Edit">
                                         <i class="ri-edit-box-fill"></i>
                                     </button>
+                                    @if(Auth::user()->id == 1)
                                     <button type="button" onclick="confirmDelete({{$give->id}});" class="btn btn-danger btn-sm" title="Delete">
                                         <i class="ri-chat-delete-fill"></i>
                                     </button>
+                                    @endif
 
                                     <form action="{{route('payment-give.delete', ['id' => $give->id])}}" method="POST" id="giveDeleteForm{{$give->id}}">
                                         @csrf

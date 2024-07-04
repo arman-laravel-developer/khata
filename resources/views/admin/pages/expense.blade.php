@@ -56,9 +56,11 @@
                                     <button type="button" value="{{$expense->id}}" class="btn btn-success editBtn btn-sm" title="Edit">
                                         <i class="ri-edit-box-fill"></i>
                                     </button>
+                                    @if(Auth::user()->id == 1)
                                     <button type="button" onclick="confirmDelete({{$expense->id}});" class="btn btn-danger btn-sm" title="Delete">
                                         <i class="ri-chat-delete-fill"></i>
                                     </button>
+                                    @endif
 
                                     <form action="{{route('expense.delete', ['id' => $expense->id])}}" method="POST" id="expenseDeleteForm{{$expense->id}}">
                                         @csrf

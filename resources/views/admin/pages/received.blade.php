@@ -22,6 +22,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="float-end">Total Due : &#2547;{{number_format($dueAmount)}}</p>
+                            <p>Total Paid : &#2547;{{number_format($paidAmount)}}</p>
+                        </div>
+                    </div>
                     <table id="alternative-page-datatable" class="table table-striped dt-responsive nowrap w-100">
                         <thead>
                         <tr>
@@ -59,12 +65,23 @@
                                     @endif
                                 </td>
                                 <td>
+                                    <button type="button" value="{{$sell->id}}" class="btn btn-primary viewBtn btn-sm" title="View">
+                                        <i class="ri-eye-fill"></i>
+                                    </button>
+                                    @if($sell->payment_status == 1)
+                                    <button type="button" value="{{$sell->id}}" class="btn btn-success editBtn btn-sm" title="Edit" disabled>
+                                        <i class="ri-edit-box-fill"></i>
+                                    </button>
+                                    @else
                                     <button type="button" value="{{$sell->id}}" class="btn btn-success editBtn btn-sm" title="Edit">
                                         <i class="ri-edit-box-fill"></i>
                                     </button>
+                                    @endif
+                                    @if(Auth::user()->id == 1)
                                     <button type="button" onclick="confirmDelete({{$sell->id}});" class="btn btn-danger btn-sm" title="Delete">
                                         <i class="ri-chat-delete-fill"></i>
                                     </button>
+                                    @endif
 
                                     <form action="{{route('payment-received.delete', ['id' => $sell->id])}}" method="POST" id="sellDeleteForm{{$sell->id}}">
                                         @csrf
@@ -142,13 +159,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div> <!-- end modal header -->
                 <div class="modal-body">
-                    <form action="{{route('payment-received.new')}}" id="submitForm" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('payment-received.update')}}" id="submitFormEdit" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <input type="text" name="sell_id" id="sell_id">
+                        <input type="hidden" name="sell_id" id="sell_id">
                         <div class="mb-3">
                             <label class="col-form-label">Member ID:</label>
-                            <input type="number" class="form-control" name="member_id_edit" required>
+                            <input type="number" class="form-control" name="member_id" id="member_id_edit" readonly required>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Amount:</label>
@@ -166,7 +183,38 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" onclick="validateAndSubmitForm()" class="btn btn-primary">Submit</button>
+                    <button type="submit" onclick="validateAndSubmitEditForm()" class="btn btn-primary">Submit</button>
+                </div> <!-- end modal footer -->
+            </div> <!-- end modal content-->
+        </div> <!-- end modal dialog-->
+    </div> <!-- end modal-->
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="viewSellModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Dollar Sell Payment View</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div> <!-- end modal header -->
+                <div class="modal-body">
+                    <table class="table table-bordered table-hover table-responsive">
+                        <thead>
+                        <tr>
+                            <th>Sl</th>
+                            <th>Payment Method</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sellData">
+                        <!-- Dynamic content will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Understood</button>
                 </div> <!-- end modal footer -->
             </div> <!-- end modal content-->
         </div> <!-- end modal dialog-->
@@ -223,6 +271,32 @@
                         $('#amount_edit').val(response.sell.amount)
 
                         $('#sell_id').val(sell_id);
+                    }
+                });
+            });
+
+            $(document).on('click', '.viewBtn', function () {
+                var sell_id = $(this).val();
+                var viewSellRoute = "{{ route('payment-received.view', ':id') }}".replace(':id', sell_id);
+
+                $.ajax({
+                    type: 'GET',
+                    url: viewSellRoute,
+                    success: function (response) {
+                        if (response.status === 200) {
+                            var sellData = response.sell;
+                            var tableBody = '';
+                            $.each(sellData, function (index, item) {
+                                tableBody += '<tr>';
+                                tableBody += '<td>' + (index + 1) + '</td>';
+                                tableBody += '<td>' + item.payment_gateway + '</td>';
+                                tableBody += '<td>' + item.amount + 'TK' + '</td>';
+                                tableBody += '<td>' + new Date(item.created_at).toLocaleDateString() + '</td>';
+                                tableBody += '</tr>';
+                            });
+                            $('#sellData').html(tableBody);
+                            $('#viewSellModal').modal('show');
+                        }
                     }
                 });
             });

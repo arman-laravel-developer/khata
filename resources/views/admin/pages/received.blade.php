@@ -144,13 +144,15 @@
                 <div class="modal-body">
                     <form action="{{route('payment-received.new')}}" id="submitForm" method="POST" enctype="multipart/form-data">
                         @csrf
+
+                        <input type="text" name="sell_id" id="sell_id">
                         <div class="mb-3">
                             <label class="col-form-label">Member ID:</label>
-                            <input type="number" class="form-control" name="member_id" required>
+                            <input type="number" class="form-control" name="member_id_edit" required>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Amount:</label>
-                            <input type="text" class="form-control" name="amount" id="amount" readonly required>
+                            <input type="text" class="form-control" name="amount" id="amount_edit" readonly required>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Paying Amount:</label>
@@ -206,8 +208,24 @@
         $(document).ready(function () {
             $(document).on('click', '.editBtn', function () {
                 var sell_id = $(this).val();
-                alert(sell_id);
-            })
+                var editSellRoute = "{{route('payment-received.edit', ':id')}}"
+                $('#editSellModal').modal('show');
+
+                var url = editSellRoute.replace(':id', sell_id);
+
+                $.ajax({
+                    type : 'GET',
+                    url : url,
+                    success : function (response) {
+                        console.log(response);
+
+                        $('#member_id_edit').val(response.sell.member_id)
+                        $('#amount_edit').val(response.sell.amount)
+
+                        $('#sell_id').val(sell_id);
+                    }
+                });
+            });
         });
     </script>
 

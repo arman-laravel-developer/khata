@@ -39,6 +39,7 @@
                             <th>Payment Gateway</th>
                             <th>Add By</th>
                             <th>Update By</th>
+                            <th>Payment Date</th>
                             <th>Payment Status</th>
                             <th>Action</th>
                         </tr>
@@ -54,6 +55,7 @@
                                 <td>{{$give->payment_gateway}}</td>
                                 <td>{{$give->userAdd->name}}</td>
                                 <td>{{$give->userUpdate->name ?? 'N/A'}}</td>
+                                <td>{{ $give->created_at->format('d-m-Y H:i A') }}</td>
                                 <td>
                                     @if($give->payment_status == 1)
                                         <span class="badge bg-success">Complete</span>

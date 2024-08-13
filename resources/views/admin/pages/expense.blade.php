@@ -35,6 +35,7 @@
                             <th>Amount</th>
                             <th>Added By</th>
                             <th>Update By</th>
+                            <th>Date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -52,6 +53,7 @@
                                 <td>
                                     {{$expense->userUpdate->name ?? 'N/A'}}
                                 </td>
+                                <td>{{ $expense->created_at->format('d-m-Y H:i A') }}</td>
                                 <td>
                                     <button type="button" value="{{$expense->id}}" class="btn btn-success editBtn btn-sm" title="Edit">
                                         <i class="ri-edit-box-fill"></i>
